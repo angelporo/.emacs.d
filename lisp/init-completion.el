@@ -223,10 +223,10 @@ value of the selected COLOR."
   (consult-customize
    consult-line consult-line-multi :preview-key 'any
    consult-buffer consult-recent-file consult-theme :preview-key '(:debounce 1.0 any)
-   consult-goto-line :preview-key '(:debounce 0.5 any)
+   consult-goto-line :preview-key '(:debounce 1 any)
    consult-ripgrep consult-git-grep consult-grep
    :initial (selected-region-or-symbol-at-point)
-   :preview-key '(:debounce 0.5 any))
+   :preview-key "M-.")
 
   ;; Optionally configure the narrowing key.
   ;; Both < and C-+ work reasonably well.
