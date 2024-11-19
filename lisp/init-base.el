@@ -86,7 +86,7 @@
   :init
   (setq gcmh-idle-delay 'auto
         gcmh-auto-idle-delay-factor 10
-        gcmh-high-cons-threshold #x1000000)) ; 16MB
+        gcmh-high-cons-threshold (* 32 1024 1024))) ; 16MB
 
 ;; Set UTF-8 as the default coding system
 (when (fboundp 'set-charset-priority)
