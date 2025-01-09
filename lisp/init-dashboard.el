@@ -88,7 +88,7 @@
           dashboard-show-shortcuts nil
           dashboard-items '((recents  . 10)
                             (bookmarks . 5)
-                            (projects . 9))
+                            (projects . 14))
 
           dashboard-startupify-list '(dashboard-insert-banner
                                       dashboard-insert-newline
