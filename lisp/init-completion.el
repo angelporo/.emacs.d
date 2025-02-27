@@ -309,7 +309,11 @@ targets."
   (corfu-popupinfo-delay '(0.4 . 0.2))
   :custom-face
   (corfu-border ((t (:inherit region :background unspecified))))
-  :bind ("M-/" . completion-at-point)
+  :bind (:map corfu-map
+         ("M-SPC" . corfu-insert-separator)
+         ("M-/" . completion-at-point)
+         ("C-n" . next-line)
+         ("C-p" . previous-line))
   :hook ((after-init . global-corfu-mode)
          (global-corfu-mode . corfu-popupinfo-mode)))
 
