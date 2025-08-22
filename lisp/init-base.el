@@ -84,9 +84,10 @@
 (use-package gcmh
   :diminish
   :hook (emacs-startup . gcmh-mode)
-  :init (setq gcmh-idle-delay 'auto
-              gcmh-auto-idle-delay-factor 10
-              gcmh-high-cons-threshold #x4000000)) ; 64MB
+  :init
+  (setq gcmh-idle-delay 'auto
+        gcmh-auto-idle-delay-factor 10
+        gcmh-high-cons-threshold (* 128 1024 1024))) ; 16MB
 
 ;; Set UTF-8 as the default coding system
 (when (fboundp 'set-charset-priority)
@@ -122,6 +123,7 @@
 ;; Save place
 (use-package saveplace
   :hook (after-init . save-place-mode))
+
 
 ;; History
 (use-package recentf
