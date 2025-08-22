@@ -39,7 +39,9 @@
 ;; are compiled when gccemacs is installed.
 (setq native-comp-deferred-compilation t ;; 自 Emacs 29.1 起已废弃
       native-comp-jit-compilation t;;     ; 启用即时编译
-      native-comp-always-compile t)
+      native-comp-always-compile t
+      native-comp-speed 3
+      )
 
 ;; Package initialize occurs automatically, before `user-init-file' is
 ;; loaded, but after `early-init-file'. We handle package

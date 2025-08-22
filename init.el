@@ -126,7 +126,7 @@ Avoid placing large files like EAF in `site-lisp` to prevent slow startup."
 (require 'init-kill-ring)
 (require 'init-workspace)
 (require 'init-window)
-(require 'init-treemacs)
+;; (require 'init-treemacs)
 
 (require 'init-eshell)
 (require 'init-shell)
@@ -136,24 +136,24 @@ Avoid placing large files like EAF in `site-lisp` to prevent slow startup."
 (require 'init-reader)
 
 (require 'init-dict)
-(require 'init-docker)
+;; (require 'init-docker)
 (require 'init-player)
 (require 'init-utils)
 
 ;; Programming
 (require 'init-vcs)
 (require 'init-check)
-(require 'init-lsp)
-(require 'init-dap)
-(require 'init-ai)
+;; (require 'init-lsp)
+;; (require 'init-dap)
+;; (require 'init-ai)
 
 (require 'init-prog)
 (require 'init-elisp)
-(require 'init-c)
-(require 'init-go)
-(require 'init-rust)
-(require 'init-python)
-(require 'init-ruby)
+;; (require 'init-c)
+;; (require 'init-go)
+;; (require 'init-rust)
+;; (require 'init-python)
+;; (require 'init-ruby)
 (require 'init-elixir)
 (require 'init-web)
 
