@@ -85,3 +85,6 @@ tutorial/
 url/
 var/
 workspace/
+.emigo_repomap/*
+lsp-bridge/*
+yarn.lock
