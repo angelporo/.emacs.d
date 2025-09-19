@@ -38,11 +38,13 @@
           gc-cons-percentage 1.0)
   (setq gc-cons-threshold most-positive-fixnum))
 
+(add-to-list 'default-frame-alist '(undecorated-round . t))
+
 ;; Prevent unwanted runtime compilation for gccemacs (native-comp) users;
 ;; packages are compiled ahead-of-time when they are installed and site files
 ;; are compiled when gccemacs is installed.
-(setq native-comp-deferred-compilation t ;; 自 Emacs 29.1 起已废弃
-      native-comp-jit-compilation t;;     ; 启用即时编译
+(setq native-comp-deferred-compilation t;; 自 Emacs 29.1 起已废弃
+      native-comp-jit-compilation t     ; 启用即时编译
       native-comp-always-compile t
       native-comp-speed 3
       )
