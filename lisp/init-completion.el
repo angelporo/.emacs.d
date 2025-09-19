@@ -171,10 +171,13 @@
     ;; This adds thin lines, sorting and hides the mode line of the window.
     (advice-add #'register-preview :override #'consult-register-window)
 
-    ;; Use Consult to select xref locations with preview
-    (with-eval-after-load 'xref
-      (setq xref-show-xrefs-function #'consult-xref
-            xref-show-definitions-function #'consult-xref))
+    ;; The :init configuration is always executed (Not lazy)
+    :init
+    ;; Optionally configure the register formatting. This improves the register
+    ;; preview for `consult-register', `consult-register-load',
+    ;; `consult-register-store' and the Emacs built-ins.
+    (setq register-preview-delay 1
+          register-preview-function #'consult-register-format)
 
     ;; More utils
     (defvar consult-colors-history nil
@@ -220,8 +223,8 @@ value of the selected COLOR."
     ;; Optionally configure preview. The default value
     ;; is 'any, such that any key triggers the preview.
     ;; (setq consult-preview-key 'any)
-    ;; (setq consult-preview-key '("S-<down>" "S-<up>"))
-    (setq consult-preview-key nil)
+    (setq consult-preview-key '("M-." "S-<up>"))
+    ;; (setq consult-preview-key nil)
     ;; For some commands and buffer sources it is useful to configure the
     ;; :preview-key on a per-command basis using the `consult-customize' macro.
     (consult-customize
