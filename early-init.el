@@ -34,14 +34,19 @@
 ;; Defer garbage collection further back in the startup process
 (setq gc-cons-threshold most-positive-fixnum)
 
+(add-to-list 'default-frame-alist '(undecorated-round . t))
+
 ;; Prevent unwanted runtime compilation for gccemacs (native-comp) users;
 ;; packages are compiled ahead-of-time when they are installed and site files
 ;; are compiled when gccemacs is installed.
-(setq native-comp-deferred-compilation t ;; 自 Emacs 29.1 起已废弃
-      native-comp-jit-compilation t;;     ; 启用即时编译
+(setq native-comp-deferred-compilation t;; 自 Emacs 29.1 起已废弃
+      native-comp-jit-compilation t     ; 启用即时编译
       native-comp-always-compile t
       native-comp-speed 3
       )
+
+(setq max-lisp-eval-depth 10000)   ; 默认是1600，我们加倍
+(setq max-specpdl-size 25000)      ; 增加这个值以避免变量列表过长的错误
 
 ;; Package initialize occurs automatically, before `user-init-file' is
 ;; loaded, but after `early-init-file'. We handle package

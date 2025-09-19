@@ -1,4 +1,5 @@
-  ;;; im-cursor-chg.el --- Change cursor color for input method  -*- lexical-binding: t; -*-
+;;; im-cursor-chg.el --- Description -*- lexical-binding: t; -*-
+;;; im-cursor-chg.el --- Change cursor color for input method
 
 ;; Inspired by code from cursor-chg
 ;; URL: https://github.com/emacsmirror/cursor-chg/blob/master/cursor-chg.el
