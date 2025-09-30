@@ -98,7 +98,7 @@
   (use-package prettier
     :diminish
     :defines prettier-pre-warm
-    :hook ((js-base-mode css-mode sgml-mode web-mode) . prettier-mode)
+    :hook ((js-base-mode css-mode tsx-ts-mode sgml-mode web-mode) . prettier-mode)
     :init (setq prettier-pre-warm 'none)))
 
 ;; Typescript
