@@ -39,12 +39,12 @@
 ;; Prevent unwanted runtime compilation for gccemacs (native-comp) users;
 ;; packages are compiled ahead-of-time when they are installed and site files
 ;; are compiled when gccemacs is installed.
-(setq native-comp-deferred-compilation t;; 自 Emacs 29.1 起已废弃
-      native-comp-jit-compilation t     ; 启用即时编译
-      native-comp-always-compile t
+(setq native-comp-deferred-compilation nil
+      native-comp-jit-compilation nil     ; 启用即时编译
+      native-comp-always-compile nil
       native-comp-speed 3
+      native-comp-async-report-warnings-errors nil
       )
-
 (setq max-lisp-eval-depth 10000)   ; 默认是1600，我们加倍
 (setq max-specpdl-size 25000)      ; 增加这个值以避免变量列表过长的错误
 
