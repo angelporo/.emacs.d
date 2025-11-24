@@ -109,7 +109,8 @@
   (set-selection-coding-system 'utf-8))
 
 ;; Environment
-(when (or (memq window-system '(mac ns x)) (daemonp))
+(when (and centaur-use-exec-path-from-shell
+           (or (memq window-system '(mac ns x)) (daemonp)))
   (use-package exec-path-from-shell
     :commands exec-path-from-shell-initialize
     :custom (exec-path-from-shell-arguments '("-l"))
@@ -222,7 +223,8 @@
 (use-package async
   :functions (async-bytecomp-package-mode dired-async-mode)
   :init
-  (async-bytecomp-package-mode 1)
+  (unless sys/win32p
+    (async-bytecomp-package-mode 1))
   (dired-async-mode 1))
 
 ;; Frame

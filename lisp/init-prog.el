@@ -68,19 +68,28 @@
   :diminish
   :config
   (when (childframe-workable-p)
-    (use-package eldoc-box
-      :custom
-      (eldoc-box-lighter nil)
-      (eldoc-box-only-multi-line t)
-      (eldoc-box-clear-with-C-g t)
-      :custom-face
-      (eldoc-box-border ((t (:inherit posframe-border :background unspecified))))
-      (eldoc-box-body ((t (:inherit tooltip))))
-      :hook ((eglot-managed-mode . eldoc-box-hover-at-point-mode))
-      :config
-      ;; Prettify `eldoc-box' frame
-      (setf (alist-get 'left-fringe eldoc-box-frame-parameters) 8
-            (alist-get 'right-fringe eldoc-box-frame-parameters) 8))))
+    (if emacs/>=30p
+        (use-package eldoc-mouse
+          :diminish
+          :bind (:map eldoc-mouse-mode-map
+                 ("C-h ." . eldoc-mouse-pop-doc-at-cursor))
+          :hook (eglot-managed-mode emacs-lisp-mode)
+          :init (setq eldoc-mouse-posframe-border-color (face-background 'posframe-border nil t))
+          :config (add-to-list 'eldoc-mouse-posframe-override-parameters
+                               `(background-color . ,(face-background 'tooltip nil t))))
+      (use-package eldoc-box
+        :custom
+        (eldoc-box-lighter nil)
+        (eldoc-box-only-multi-line t)
+        (eldoc-box-clear-with-C-g t)
+        :custom-face
+        (eldoc-box-border ((t (:inherit posframe-border :background unspecified))))
+        (eldoc-box-body ((t (:inherit tooltip))))
+        :hook ((eglot-managed-mode . eldoc-box-mouse-mode))
+        :config
+        ;; Prettify `eldoc-box' frame
+        (setf (alist-get 'left-fringe eldoc-box-frame-parameters) 8
+              (alist-get 'right-fringe eldoc-box-frame-parameters) 8)))))
 
 ;; Cross-referencing commands
 (use-package xref
@@ -117,13 +126,12 @@
   (defconst devdocs-major-mode-docs-alist
     '((c-mode          . ("c"))
       (c++-mode        . ("cpp"))
-      (python-mode     . ("python~3.10" "python~2.7"))
-      (ruby-mode       . ("ruby~3.1"))
+      (python-mode     . ("python~3.14" "python~2.7"))
+      (ruby-mode       . ("ruby~3"))
 
       (rustic-mode     . ("rust"))
       (css-mode        . ("css"))
       (html-mode       . ("html"))
-      (julia-mode      . ("julia~1.8"))
       (js-mode         . ("javascript" "jquery"))
       (emacs-lisp-mode . ("elisp")))
     "Alist of major-mode and docs.")
