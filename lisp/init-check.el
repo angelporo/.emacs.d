@@ -34,10 +34,11 @@
   :diminish
   :functions my-elisp-flymake-byte-compile
   :bind ("C-c f" . flymake-show-buffer-diagnostics)
-  :hook (prog-mode . flymake-mode)
-  :init (setq flymake-no-changes-timeout nil
-              flymake-fringe-indicator-position 'right-fringe
-              flymake-margin-indicator-position 'right-margin)
+  :hook prog-mode
+  :custom
+  (flymake-no-changes-timeout nil)
+  (flymake-fringe-indicator-position 'right-fringe)
+  (flymake-margin-indicator-position 'right-margin)
   :config
   ;; Check elisp with `load-path'
   (defun my-elisp-flymake-byte-compile (fn &rest args)
@@ -47,13 +48,25 @@
       (apply fn args)))
   (advice-add 'elisp-flymake-byte-compile :around #'my-elisp-flymake-byte-compile))
 
-(use-package flymake-popon
+;; Display Flymake errors with overlays
+(use-package flyover
   :diminish
-  :custom-face
-  (flymake-popon ((t :inherit default :height 0.85)))
-  (flymake-popon-posframe-border ((t :foreground ,(face-background 'posframe-border nil t))))
-  :hook (flymake-mode . flymake-popon-mode)
-  :init (setq flymake-popon-width 80))
+  :hook flymake-mode
+  :custom (flyover-checkers '(flymake))
+  :config
+  ;; FIXME: see https://github.com/konrad1977/flyover/issues/30#issuecomment-3624168811
+  (defun flyover--maybe-display-errors-debounced (&rest _)
+    "Debounced messages of `flyover--maybe-display-errors`."
+    (condition-case err
+        (progn
+          (when flyover--debounce-timer
+            (cancel-timer flyover--debounce-timer))
+          (setq flyover--debounce-timer
+                (run-with-idle-timer flyover-debounce-interval nil
+                                     #'flyover--maybe-display-errors)))
+      (error
+       (message "Error in debounced display: %S" err)
+       (setq flyover--debounce-timer nil)))))
 
 (provide 'init-check)
 
