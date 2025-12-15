@@ -114,7 +114,6 @@
       :defines posframe-border-width
       :functions posframe-poshandler-frame-center-near-bottom
       :custom-face
-      (which-key-posframe ((t (:inherit tooltip))))
       (which-key-posframe-border ((t (:inherit posframe-border :background unspecified))))
       :init
       (setq which-key-posframe-border-width posframe-border-width
@@ -326,6 +325,9 @@
 (use-package disk-usage)
 (use-package memory-usage)
 (use-package reveal-in-folder)
+
+(use-package file-info
+  :bind ("C-c c i" . file-info-show))
 
 (use-package list-environment
   :init
