@@ -40,6 +40,8 @@
 
 (add-to-list 'default-frame-alist '(undecorated-round . t))
 
+(setq max-lisp-eval-depth 20000)
+(setq max-specpdl-size 20000)
 ;; Prevent unwanted runtime compilation for gccemacs (native-comp) users;
 ;; packages are compiled ahead-of-time when they are installed and site files
 ;; are compiled when gccemacs is installed.
