@@ -60,6 +60,8 @@
 ;; Optimize Garbage Collection for Startup
 (setq gc-cons-threshold most-positive-fixnum)
 
+
+
 ;; Optimize `auto-mode-alist`
 (setq auto-mode-case-fold nil)
 

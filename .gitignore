@@ -88,3 +88,4 @@ workspace/
 .emigo_repomap/*
 lsp-bridge/*
 yarn.lock
+.cecli*
