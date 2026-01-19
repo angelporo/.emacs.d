@@ -34,8 +34,13 @@
   (require 'init-custom))
 
 (use-package tabspaces
-  :functions tabspaces-mode
-  :hook (after-init . (lambda() (unless centaur-dashboard (tabspaces-mode t))))
+  :diminish
+  :commands tabspaces-mode
+  :hook ((after-init . (lambda()
+                         ;; Don't enable in bashboard
+                         (unless centaur-dashboard
+                           (tabspaces-mode 1))
+                         (tab-bar-history-mode 1))))
   :custom
   (tab-bar-show nil)
 
@@ -70,8 +75,8 @@
 
     (defun my-tabspaces-delete-childframe (&rest _)
       "Delete all child frames."
-      (ignore-errors
-        (posframe-delete-all)))
+      (and (fboundp 'posframe-delete-all)
+           (posframe-delete-all)))
     (advice-add #'tabspaces-save-session :before #'my-tabspaces-delete-childframe)
 
     (defun my-tabspaces-burry-window (&rest _)
