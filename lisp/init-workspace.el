@@ -34,8 +34,13 @@
   (require 'init-custom))
 
 (use-package tabspaces
-  :functions tabspaces-mode
-  :hook (after-init . (lambda() (unless centaur-dashboard (tabspaces-mode t))))
+  :diminish
+  :commands tabspaces-mode
+  :hook ((after-init . (lambda()
+                         ;; Don't enable in bashboard
+                         (unless centaur-dashboard
+                           (tabspaces-mode 1))
+                         (tab-bar-history-mode 1))))
   :custom
   (tab-bar-show nil)
 
@@ -47,6 +52,7 @@
   ;; sessions
   (tabspaces-session t)
   (tabspaces-session-auto-restore (not centaur-dashboard))
+  (tabspaces-session-file (concat user-emacs-directory "tabspaces/tabsession.el"))
   :config
   (with-no-warnings
     ;; Filter Buffers for Consult-Buffer
@@ -62,23 +68,49 @@
               :state    #'consult--buffer-state
               :default  t
               :items    (lambda () (consult--buffer-query
-                               :predicate #'tabspaces--local-buffer-p
-                               :sort 'visibility
-                               :as #'buffer-name)))
+                                    :predicate #'tabspaces--local-buffer-p
+                                    :sort 'visibility
+                                    :as #'buffer-name)))
         "Set workspace buffer list for consult-buffer.")
       (add-to-list 'consult-buffer-sources 'consult-source-workspace))
 
-    (defun my-tabspaces-delete-childframe (&rest _)
-      "Delete all child frames."
-      (ignore-errors
-        (posframe-delete-all)))
-    (advice-add #'tabspaces-save-session :before #'my-tabspaces-delete-childframe)
+    (defun tabspaces--delete-old-files (dir days)
+      "Delete backup files of DIR, with timestamp suffix older than DAYS days."
+      (let ((cutoff (time-subtract (current-time)
+                                   (seconds-to-time (* days 24 60 60)))))
+        (dolist (file (directory-files dir 'full "\\.[0-9]\\{8\\}\\'"))
+          (when-let ((timestamp-str (substring file (string-match "\\([0-9]\\{8\\}\\)\\'" file))))
+            (when (time-less-p (date-to-time timestamp-str) cutoff)
+              (delete-file file 'trash))))))
 
-    (defun my-tabspaces-burry-window (&rest _)
-      "Burry *Messages* buffer."
-      (ignore-errors
-        (quit-windows-on messages-buffer-name)))
-    (advice-add #'tabspaces-restore-session :after #'my-tabspaces-burry-window)))
+    (defun tabspaces--backup-session (&rest _)
+      "Backup the session file."
+      (interactive)
+      (when tabspaces-session
+        (let ((dir (expand-file-name "tabspaces" user-emacs-directory)))
+          (unless (file-exists-p dir)
+            (mkdir dir))
+
+          ;; Delete the sessions that are older than 7 days
+          (tabspaces--delete-old-files dir 7))
+
+        ;; Backup session
+        (when (file-exists-p tabspaces-session-file)
+          (copy-file tabspaces-session-file
+                     (format "%s.%s" tabspaces-session-file (format-time-string "%Y%m%d"))
+                     t))))
+    (advice-add #'tabspaces--save-session-smart :before #'tabspaces--backup-session)
+
+    (defun tabspaces--delete-childframe (&rest _)
+      "Delete all child frames."
+      (and (fboundp 'posframe-delete-all)
+           (posframe-delete-all)))
+    (advice-add #'tabspaces--save-session-smart :before #'tabspaces--delete-childframe)
+
+    (defun tabspaces--bury-messages (&rest _)
+      "Bury *Messages* buffer."
+      (quit-windows-on messages-buffer-name))
+    (advice-add #'tabspaces-restore-session :after #'tabspaces--bury-messages)))
 
 (provide 'init-workspace)
 
