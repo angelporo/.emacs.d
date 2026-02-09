@@ -219,15 +219,6 @@
       sentence-end-double-space nil
       word-wrap-by-category t)
 
-;; Asynchronous processing
-(use-package async
-  :diminish (async-bytecomp-package-mode dired-async-mode)
-  :functions (async-bytecomp-package-mode dired-async-mode)
-  :init
-  (unless sys/win32p
-    (async-bytecomp-package-mode 1))
-  (dired-async-mode 1))
-
 ;; Frame
 (when (display-graphic-p)
   ;; Frame maximized on startup
@@ -247,7 +238,7 @@
              ("C-M-<up>"        . centaur-frame-top-half)
              ("C-M-<down>"      . centaur-frame-bottom-half))
 
-  ;; Frame transparence
+  ;; Frame transparency
   (use-package transwin
     :bind (("C-M-9" . transwin-inc)
            ("C-M-8" . transwin-dec)
