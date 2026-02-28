@@ -113,13 +113,13 @@
 ;; Enforce rules for popups
 (use-package popper
   :custom
-  (popper-group-function #'popper-group-by-directory)
+  (popper-group-function #'popper-group-by-project)
   (popper-echo-dispatch-actions t)
   :bind (:map popper-mode-map
          ("C-h z"       . popper-toggle)
          ("C-<tab>"     . popper-cycle)
          ("C-M-<tab>"   . popper-toggle-type))
-  :hook (window-setup . popper-echo-mode)
+  :hook (window-setup . popper-tab-line-mode)
   :init
   (setq popper-mode-line ""
         popper-reference-buffers
@@ -189,8 +189,8 @@
     (defun popper-close-window-hack (&rest _args)
       "Close popper window via `C-g'."
       (when (and ; (called-interactively-p 'interactive)
-                 (not (region-active-p))
-                 popper-open-popup-alist)
+             (not (region-active-p))
+             popper-open-popup-alist)
         (let ((window (caar popper-open-popup-alist))
               (buffer (cdar popper-open-popup-alist)))
           (when (and (window-live-p window)
